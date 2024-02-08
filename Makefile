@@ -29,7 +29,7 @@ st: $(OBJ)
 
 static: .docker_lock
 	# TODO: assert we are in the right directory
-	docker run -t --rm -v .:/st/ -w /st void make $(ARGS)
+	docker run -t --rm -v .:/st/ -w /st void make CFLAGS=-static LINKAGE=--static $(ARGS)
 
 clean:
 	rm -f st $(OBJ) st-$(VERSION).tar.gz
