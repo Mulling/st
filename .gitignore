@@ -1,4 +1,4 @@
 /st
 /*.o
-/config.h
 /.docker_lock
+/perf.*
