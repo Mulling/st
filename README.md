@@ -17,6 +17,7 @@ make
 - [ ] Make the font cache simpler (upstream).
 - [ ] Cache glyphs.
 - [ ] Build X11 dependencies with `--gc-sections`.
+- [ ] Provide terminfo if missing.
 
 
 ## Credits:
