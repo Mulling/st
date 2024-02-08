@@ -23,6 +23,14 @@ $(OBJ): config.h config.mk
 st: $(OBJ)
 	$(CC) -o $@ $(OBJ) $(STLDFLAGS)
 
+.docker_lock: Dockerfile
+	docker build . -t void
+	touch $@
+
+static: .docker_lock
+	# TODO: assert we are in the right directory
+	docker run -t --rm -v .:/st/ -w /st void make $(ARGS)
+
 clean:
 	rm -f st $(OBJ) st-$(VERSION).tar.gz
 
@@ -48,4 +56,4 @@ uninstall:
 	rm -f $(DESTDIR)$(PREFIX)/bin/st
 	rm -f $(DESTDIR)$(MANPREFIX)/man1/st.1
 
-.PHONY: all clean dist install uninstall
+.PHONY: all static clean dist install uninstall
