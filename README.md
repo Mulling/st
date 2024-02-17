@@ -3,10 +3,8 @@
 ## Building:
 
 ```shell
-docker build . -t void
-docker run -it -v .:/st/ -w /st void
-
-make
+make st     # for dyn linkage
+make static # for static linkage
 ```
 
 ## TODO:
