@@ -19,4 +19,4 @@ LIBS = `pkg-config --libs x11          $(LINKAGE)` \
 # flags
 STCPPFLAGS = -DVERSION=\"$(VERSION)\" -D_XOPEN_SOURCE=600
 STCFLAGS = $(INCS) $(STCPPFLAGS) $(CPPFLAGS) $(CFLAGS) -flto -O3 -ffunction-sections
-STLDFLAGS = $(LIBS) $(LDFLAGS) $(CFLAGS) -flto -O3 -Wl,--gc-sections
+STLDFLAGS = $(LIBS) $(LDFLAGS) $(CFLAGS) -flto -O3 -Wl,--gc-sections -Wl,--strip-all
