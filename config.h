@@ -5,7 +5,7 @@
  *
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
-static char *font = "Comic Code";
+static char *font = "Comic Code:pixelsize=18";
 static int borderpx = 4;
 
 /*
