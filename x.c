@@ -1133,11 +1133,11 @@ xicdestroy(XIC xim, XPointer client, XPointer call)
 void
 xinit(int cols, int rows)
 {
-    XGCValues gcvalues;
-    Cursor cursor;
-    Window parent;
-    pid_t thispid = getpid();
-    XColor xmousefg, xmousebg;
+	XGCValues gcvalues;
+	Cursor cursor;
+	Window parent, root;
+	pid_t thispid = getpid();
+	XColor xmousefg, xmousebg;
 
     if (!(xw.dpy = XOpenDisplay(NULL)))
         die("can't open display\n");
@@ -1172,21 +1172,24 @@ xinit(int cols, int rows)
         | ButtonMotionMask | ButtonPressMask | ButtonReleaseMask;
     xw.attrs.colormap = xw.cmap;
 
-    if (!(opt_embed && (parent = strtol(opt_embed, NULL, 0))))
-        parent = XRootWindow(xw.dpy, xw.scr);
-    xw.win = XCreateWindow(xw.dpy, parent, xw.l, xw.t,
-            win.w, win.h, 0, XDefaultDepth(xw.dpy, xw.scr), InputOutput,
-            xw.vis, CWBackPixel | CWBorderPixel | CWBitGravity
-            | CWEventMask | CWColormap, &xw.attrs);
+	root = XRootWindow(xw.dpy, xw.scr);
+	if (!(opt_embed && (parent = strtol(opt_embed, NULL, 0))))
+		parent = root;
+	xw.win = XCreateWindow(xw.dpy, root, xw.l, xw.t,
+			win.w, win.h, 0, XDefaultDepth(xw.dpy, xw.scr), InputOutput,
+			xw.vis, CWBackPixel | CWBorderPixel | CWBitGravity
+			| CWEventMask | CWColormap, &xw.attrs);
+	if (parent != root)
+		XReparentWindow(xw.dpy, xw.win, parent, xw.l, xw.t);
 
-    memset(&gcvalues, 0, sizeof(gcvalues));
-    gcvalues.graphics_exposures = False;
-    dc.gc = XCreateGC(xw.dpy, parent, GCGraphicsExposures,
-            &gcvalues);
-    xw.buf = XCreatePixmap(xw.dpy, xw.win, win.w, win.h,
-            DefaultDepth(xw.dpy, xw.scr));
-    XSetForeground(xw.dpy, dc.gc, dc.col[defaultbg].pixel);
-    XFillRectangle(xw.dpy, xw.buf, dc.gc, 0, 0, win.w, win.h);
+	memset(&gcvalues, 0, sizeof(gcvalues));
+	gcvalues.graphics_exposures = False;
+	dc.gc = XCreateGC(xw.dpy, xw.win, GCGraphicsExposures,
+			&gcvalues);
+	xw.buf = XCreatePixmap(xw.dpy, xw.win, win.w, win.h,
+			DefaultDepth(xw.dpy, xw.scr));
+	XSetForeground(xw.dpy, dc.gc, dc.col[defaultbg].pixel);
+	XFillRectangle(xw.dpy, xw.buf, dc.gc, 0, 0, win.w, win.h);
 
     /* font spec buffer */
     xw.specbuf = xmalloc(cols * sizeof(GlyphFontSpec));
