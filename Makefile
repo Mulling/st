@@ -24,15 +24,15 @@ st: $(OBJ)
 	$(CC) -o $@ $(OBJ) $(STLDFLAGS)
 
 .docker_lock: Dockerfile
-	docker build . -t void
+	podman build . -t void
 	touch $@
 
 static: .docker_lock
 	# TODO: assert we are in the right directory
-	docker run -t --rm -v .:/st/ -w /st void make CFLAGS=-static LINKAGE=--static $(ARGS)
+	podman run -t --rm -v .:/st/ -w /st void make CFLAGS=-static LINKAGE=--static $(ARGS)
 
 clean:
-	rm -f st $(OBJ) st-$(VERSION).tar.gz
+	rm -f st $(OBJ) st-$(VERSION).tar.gz .docker_lock
 
 dist: clean
 	mkdir -p st-$(VERSION)
