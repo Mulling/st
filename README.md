@@ -16,6 +16,7 @@ make static # for static linkage
 - [ ] Cache glyphs.
 - [ ] Build X11 dependencies with `--gc-sections`.
 - [ ] Provide terminfo if missing.
+- [ ] Embed font.
 
 
 ## Credits:
