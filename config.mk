@@ -3,6 +3,8 @@ VERSION = 0.9.3
 
 LINKAGE ?= --shared
 
+CC=cc
+
 # paths
 PREFIX = /usr/local
 MANPREFIX = $(PREFIX)/share/man
@@ -18,5 +20,5 @@ LIBS = `pkg-config --libs x11          $(LINKAGE)` \
 
 # flags
 STCPPFLAGS = -DVERSION=\"$(VERSION)\" -D_XOPEN_SOURCE=600
-STCFLAGS = $(INCS) $(STCPPFLAGS) $(CPPFLAGS) $(CFLAGS) -flto -O3 -ffunction-sections
-STLDFLAGS = $(LIBS) $(LDFLAGS) $(CFLAGS) -flto -O3 -Wl,--gc-sections -Wl,--strip-all
+STCFLAGS = $(INCS) $(STCPPFLAGS) $(CPPFLAGS) $(CFLAGS) -flto -O3 -ffunction-sections -std=c99
+STLDFLAGS = $(LIBS) $(LDFLAGS) $(CFLAGS) -flto -O3 -Wl,--gc-sections -Wl,--strip-all -lm
